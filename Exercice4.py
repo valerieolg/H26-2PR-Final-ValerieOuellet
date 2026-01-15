@@ -1,0 +1,6 @@
+print("Que veut dire le polymorphisme en python?")
+print("Le polymorphisme permet à plusieurs objets différents d'utiliser la même méthode")
+print("Qu’est-ce qu’un fichier csv, à quoi il sert. Quel autre moyen vu en classe peut faire la même chose ?")
+print("un fichier csv permet de créer une base de données à partir d'un code python. On a aussi vu les bases de données sqlite")
+print("Quelle est la différence entre tuple, dictionnaire, liste en python?")
+print("un truple est comme une liste de données mais les données ne sont pas modifiables alors que la liste de donnée contient des données modifiables. ")
