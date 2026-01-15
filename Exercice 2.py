@@ -7,77 +7,82 @@ import os
 import sys
 from PyQt6.QtWidgets import *
 
-def window():
-    app = QApplication(sys.argv)
-    win = QWidget()
-    win.setGeometry(50, 50, 350, 200)
-    win.setWindowTitle("Comment doubler un nombre sans utiliser sa tête")
+class Window(QWidget):
+    def créerwindow(self,win):
+        win.setWindowTitle("Comment doubler un nombre sans utiliser sa tête")
+        win.setGeometry(50, 50, 350, 200)
+        self.frame = QFrame(win)
+        self.frame.setGeometry(10, 10, 300, 200)
 
-    frame = QFrame(win)
-    frame.setGeometry(10, 10, 300, 200)
+        self.grid = QGridLayout()
+        self.frame.setLayout(self.grid)
 
-    grid = QGridLayout()
-    frame.setLayout(grid)
+        self.b1 = self.grid.addWidget(QPushButton("Valider l'opération", self.frame))
+        self.b2 = self.grid.addWidget(QPushButton("Sauvegarder", self.frame))
+        self.b3 = self.grid.addWidget(QPushButton("Charger", self.frame))
 
-    ######################################################################
-    # Je crée mes Labels et mes lineEdits
-    ######################################################################
-    qlabel1 = QLabel(win)
-    qlabel1.setText("Entrer la valeur de N :")
-    grid.addWidget(qlabel1,0,0)
+        ######################################################################
+        # Je crée mes Labels et mes lineEdits
+        ######################################################################
+        qlabel1 = QLabel(win)
+        qlabel1.setText("Entrer la valeur de N :")
+        self.grid.addWidget(qlabel1,0,0)
 
-    qLine1 = QLineEdit(win)
-    qLine1.setGeometry(50, 100, 200, 50)
-    grid.addWidget(qLine1, 0, 1)
-    liste.append(qLine1)
+        qLine1 = QLineEdit(win)
+        qLine1.setGeometry(50, 100, 200, 50)
+        self.grid.addWidget(qLine1, 0, 1)
+        self.liste.append(qLine1)
 
-    qlabel2 = QLabel(win)
-    qlabel2.setText("Voici le double :")
-    grid.addWidget(qlabel2,1,0)
+        qlabel2 = QLabel(win)
+        qlabel2.setText("Voici le double :")
+        self.grid.addWidget(qlabel2,1,0)
 
-    qLine2 = QLineEdit(win)
-    qLine2.setGeometry(50, 100, 200, 50)
-    grid.addWidget(qLine2, 1, 1)
-    liste.append(qLine1)
+        qLine2 = QLineEdit(win)
+        qLine2.setGeometry(50, 100, 200, 50)
+        self.grid.addWidget(qLine2, 1, 1)
+        self.liste.append(qLine1)
 
-    ######################################################
+        ######################################################
 
-    b1 = grid.addWidget(QPushButton("Valider l'opération", frame))
-    b2 = grid.addWidget(QPushButton("Sauvegarder", frame))
-    b3 = grid.addWidget(QPushButton("Charger", frame))
+        def action(self):
+            n = int(self.lineEdit.text())
+            n2 = n * 2
+            self.lineEdit2.setText(str(n2))
 
-    win.show()
-    sys.exit(app.exec())
+        ######################################################
+        # Création des boutons
+        ######################################################
 
-    ######################################################
-    # Création des boutons
-    ######################################################
+        def b1_clicked():
+            print(n2)
 
-def b1_clicked():
-    print(n * 2)
+        def b2_clicked():
+            print("Sauvegarde réussie!")
 
+        def b3_clicked():
+            print("Résultat chargé!")
 
-def b2_clicked():
-    print("Sauvegarde réussie!")
-
-def b3_clicked():
-    print("Résultat chargé!")
-
-
-###########################################
-liste = []
-def charger():
-    user = os.getlogin()
-    f = open("C:users/" + user + "/resultats.txt", "r")
-    f.readline()
-    f.close()
-def sauvegarder():
-    f = open("resultats.txt", "w")
-    for l in liste:
-        f.write(l.text()+"\n")
-    f.close()
+        win.show()
+        sys.exit(app.exec())
+    ###########################################
+    liste = []
+    def charger(win):
+        user = os.getlogin()
+        f = open("C:users/" + user + "/resultats.txt", "r")
+        f.readline()
+        f.close()
+    def sauvegarder(win):
+        f = open("resultats.txt", "w")
+        for l in liste:
+            f.write(l.text()+"\n")
+        f.close()
 
 
 
 if __name__ == '__main__':
-    window()
+    app = QApplication(sys.argv)
+    win = QWidget()
+    myWindow = Window()
+    myWindow.buildWindow(win)
+    win.show()
+    app.exec_()
