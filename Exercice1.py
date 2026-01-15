@@ -6,7 +6,7 @@ class Triangle:
     def lignes(self):
         lignes = []
         for i in range(self.nombre):
-            espaces = " " * (self.nombre - 1)
+            espaces = " " * (self.nombre -i - 1)
             nbetoiles = self.symbol * (i + 1)
             lignes.append(espaces + nbetoiles)
         return lignes
@@ -22,8 +22,8 @@ class Affichage:
             print(ligne + " " + ligne.strip())
 
 
-n = int(input("Saisissez un nombre entier : "))
+nombre = int(input("Saisissez un nombre entier : "))
 
-triangle = Triangle(n)
+triangle = Triangle(nombre)
 affichage = Affichage(triangle)
 affichage.afficher()
