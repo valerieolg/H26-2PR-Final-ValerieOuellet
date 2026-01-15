@@ -1,88 +1,84 @@
 # Importer les modules nécessaires :
-# - os pour récupérer le nom de l'utilisateur
 # - sys pour le fonctionnement d'une application (ouvrir et ffermer l'app)
-# - PyQt6 Qwidgets pour créer l'interface de l'application (le GUi). Je les importe tous mais ceux utilisés seront QApplication, QLabel, QWidget
+# - PyQt6 Qwidgets pour créer l'interface de l'application (le GUi) les boutons et les line edits
 
-import os
 import sys
-from PyQt6.QtWidgets import *
+from PyQt6.QtWidgets import QWidget, QGridLayout, QLabel, QApplication, QLineEdit, QPushButton
 
 class Window(QWidget):
-    def créerwindow(self,win):
-        win.setWindowTitle("Comment doubler un nombre sans utiliser sa tête")
-        win.setGeometry(50, 50, 350, 200)
-        self.frame = QFrame(win)
-        self.frame.setGeometry(10, 10, 300, 200)
+    def __init__(self):
+        super().__init__()
+
+        self.setWindowTitle("Comment doubler un nombre sans utiliser sa tête")
+        self.setGeometry(50, 50, 350, 200)
 
         self.grid = QGridLayout()
-        self.frame.setLayout(self.grid)
-
-        self.b1 = self.grid.addWidget(QPushButton("Valider l'opération", self.frame))
-        self.b2 = self.grid.addWidget(QPushButton("Sauvegarder", self.frame))
-        self.b3 = self.grid.addWidget(QPushButton("Charger", self.frame))
+        self.setLayout(self.grid)
 
         ######################################################################
-        # Je crée mes Labels et mes lineEdits
+        # Je crée mes Labels et mon lineEdit
         ######################################################################
-        qlabel1 = QLabel(win)
-        qlabel1.setText("Entrer la valeur de N :")
-        self.grid.addWidget(qlabel1,0,0)
+        self.qlabel1 = QLabel()
+        self.qlabel1.setText("Entrer la valeur de N :")
+        self.grid.addWidget(self.qlabel1,0,0)
 
-        qLine1 = QLineEdit(win)
-        qLine1.setGeometry(50, 100, 200, 50)
-        self.grid.addWidget(qLine1, 0, 1)
-        self.liste.append(qLine1)
+        self.qLine1 = QLineEdit()
+        self.qLine1.setGeometry(50, 100, 200, 50)
+        self.grid.addWidget(self.qLine1, 0, 1)
 
-        qlabel2 = QLabel(win)
-        qlabel2.setText("Voici le double :")
-        self.grid.addWidget(qlabel2,1,0)
+        self.qlabel2 = QLabel()
+        self.qlabel2.setText("Voici le double :")
+        self.grid.addWidget(self.qlabel2,1,0)
 
-        qLine2 = QLineEdit(win)
-        qLine2.setGeometry(50, 100, 200, 50)
-        self.grid.addWidget(qLine2, 1, 1)
-        self.liste.append(qLine1)
-
-        ######################################################
-
-        def action(self):
-            n = int(self.lineEdit.text())
-            n2 = n * 2
-            self.lineEdit2.setText(str(n2))
+        self.resultat = QLabel("")
+        self.resultat.setStyleSheet("border: 1px solid gray; padding: 1px;")
+        self.grid.addWidget(self.resultat, 1, 1)
 
         ######################################################
         # Création des boutons
         ######################################################
 
-        def b1_clicked():
-            print(n2)
+        self.b1 = QPushButton("Valider l'opération")
+        self.b2 = QPushButton("Sauvegarder")
+        self.b3 = QPushButton("Charger")
 
-        def b2_clicked():
-            print("Sauvegarde réussie!")
+        self.grid.addWidget(self.b1, 2, 0, 1, 2)
+        self.grid.addWidget(self.b2, 3, 0)
+        self.grid.addWidget(self.b3, 3, 1)
 
-        def b3_clicked():
-            print("Résultat chargé!")
+        self.b1.clicked.connect(self.valider)
+        self.b2.clicked.connect(self.sauvegarder)
+        self.b3.clicked.connect(self.charger)
 
-        win.show()
-        sys.exit(app.exec())
+########################################################
+    # Création des méthodes pour les boutons
+    ###################################################
+
+    def valider(self):
+        n = self.qLine1.text()
+        try:
+            nombre = int(n)
+        except ValueError:
+            self.resultat.setText("Erreur : entrer un nombre entier")
+            return
+        n2 = nombre * 2
+        self.resultat.setText(str(n2))
+
+    def sauvegarder(self):
+        n2 = self.resultat.text()
+        with open("resultats.txt", "w") as f:
+            f.write(n2)
+
+    def charger(self):
+        with open("resultats.txt", "r") as f:
+            valeur = f.read().strip()
+            self.resultat.setText(valeur)
+
     ###########################################
-    liste = []
-    def charger(win):
-        user = os.getlogin()
-        f = open("C:users/" + user + "/resultats.txt", "r")
-        f.readline()
-        f.close()
-    def sauvegarder(win):
-        f = open("resultats.txt", "w")
-        for l in liste:
-            f.write(l.text()+"\n")
-        f.close()
-
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    win = QWidget()
-    myWindow = Window()
-    myWindow.buildWindow(win)
+    win = Window()
     win.show()
-    app.exec_()
+    sys.exit(app.exec())
