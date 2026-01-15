@@ -7,8 +7,8 @@ class Triangle:
         lignes = []
         for i in range(self.nombre):
             espaces = " " * (self.nombre - 1)
-            etoiles = self.symbol * (i + 1)
-            lignes.append(espaces + etoiles)
+            nbetoiles = self.symbol * (i + 1)
+            lignes.append(espaces + nbetoiles)
         return lignes
 
 
